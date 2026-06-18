@@ -16,7 +16,7 @@ export default function SiteHeader() {
         </a>
 
         <p className="hidden flex-1 text-center text-base font-black text-[#7a7068] md:block">
-          إضاءة دافئة ورذاذ يضيفان لمسة هادئة لغرفتك
+          موزع روائح بإضاءة دافئة ورذاذ ناعم
         </p>
 
         <a

@@ -4,8 +4,9 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "ORLAVIQ — جو ألطف مع المكيف",
-  description: "منتج بسيط يساعدك تحس بجو ألطف داخل الغرفة بعد تشغيل المكيف.",
+  title: "ORLAVIQ — إضاءة دافئة ورذاذ ناعم لغرفتك",",
+  description: "description:
+  "موزع روائح بإضاءة دافئة ورذاذ ناعم لإضافة لمسة هادئة داخل الغرفة.",
 };
 
 export default function RootLayout({

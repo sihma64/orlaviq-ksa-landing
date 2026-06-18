@@ -143,7 +143,7 @@ export default function Home() {
           </p>
 
           <h1 className="max-w-[620px] text-4xl font-black leading-tight sm:text-5xl lg:text-[52px]">
-           إضاءة دافئة ورذاذ يضيفان لمسة هادئة لغرفتكك
+           إضاءة دافئة ورذاذ يضيفان لمسة هادئة لغرفتك
           </h1>
 
           <p className="mt-5 max-w-2xl text-lg leading-8 text-[#5f574f]">
