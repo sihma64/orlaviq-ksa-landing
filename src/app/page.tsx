@@ -26,20 +26,6 @@ const offers = [
   },
 ];
 
-const videos = [
-  {
-    title: "لقطة المنتج",
-    file: "/videos/01_hook_direct_ksa_ar.mp4",
-  },
-  {
-    title: "تجربة داخل الغرفة",
-    file: "/videos/02_problem_story_ksa_ar.mp4",
-  },
-  {
-    title: "تأثير الضوء والرذاذ",
-    file: "/videos/03_solution_cta_ksa_ar.mp4",
-  },
-];
 
 const benefits = [
   "تأثير ضوئي يشبه اللهب عبر الرذاذ والإضاءة",
