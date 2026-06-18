@@ -190,13 +190,11 @@ export default function Home() {
         </div>
 
         <div className="order-1 mx-auto w-full max-w-[320px] rounded-[2rem] bg-white p-3 shadow-2xl lg:order-2 lg:ml-0 lg:mr-auto lg:max-w-[340px]">
-          <video
-            className="aspect-[9/16] w-full rounded-[1.5rem] object-cover"
-            src="/videos/03_solution_cta_ksa_ar.mp4"
-            controls
-            playsInline
-            preload="metadata"
-          />
+          <img
+  src="/images/how-to/howto-05-power-on.webp"
+  alt="موزع روائح بإضاءة دافئة ورذاذ ناعم"
+  className="h-full w-full rounded-[1.5rem] object-cover"
+/>
         </div>
       </section>
 
@@ -504,36 +502,7 @@ export default function Home() {
   </div>
 </section>
 
-      <section className="bg-white px-4 pt-5 pb-10 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-[1120px]">
-          <div className="text-center">
-            <h2 className="text-3xl font-black">شاهد التجربة</h2>
-            <p className="mt-3 text-base font-medium leading-8 text-[#5f574f]">
-              لقطات قصيرة توضح فكرة المنتج وأجواء استخدامه داخل الغرفة.
-            </p>
-          </div>
-
-          <div className="mt-8 grid gap-5 sm:grid-cols-3">
-            {videos.map((video) => (
-              <div
-                key={video.file}
-                className="mx-auto w-full max-w-[240px] rounded-[1.5rem] bg-[#f7f2ea] p-2 shadow-sm"
-              >
-                <video
-                  className="aspect-[9/16] w-full rounded-[1.2rem] object-cover"
-                  src={video.file}
-                  controls
-                  playsInline
-                  preload="metadata"
-                />
-                <p className="mt-3 text-center text-sm font-bold">
-                  {video.title}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      
 
       <section className="mx-auto max-w-[1120px] px-4 pt-5 pb-10 sm:px-6 lg:px-8">
         <h2 className="text-center text-3xl font-black">أسئلة شائعة</h2>
