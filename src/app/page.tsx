@@ -77,6 +77,21 @@ export default function Home() {
     });
   }, []);
 
+  const scrollToOrderForm = () => {
+    const orderSection = document.getElementById("order");
+    orderSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const handleOfferSelect = (item: typeof offers[0]) => {
+    setSelectedOffer(item.id);
+    trackEvent("SelectOffer", {
+      offer_id: item.id,
+      offer_label: item.label,
+      offer_price: item.price,
+    });
+    requestAnimationFrame(scrollToOrderForm);
+  };
+
   function buildWhatsappMessage() {
     const cityLine = city.trim() ? `\nالمدينة: ${city}` : "";
 
@@ -137,20 +152,13 @@ export default function Home() {
 بإحساس هادئ ومريح. مناسب لغرفة النوم، المجلس، أو المكتب.
           </p>
 
-          <div className="mt-8 grid gap-3 sm:grid-cols-3">
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
             {offers.map((item) => (
               <button
                 key={item.id}
                 type="button"
-                onClick={() => {
-                  setSelectedOffer(item.id);
-                  trackEvent("SelectOffer", {
-                    offer_id: item.id,
-                    offer_label: item.label,
-                    offer_price: item.price,
-                  });
-                }}
-                className={`rounded-3xl border p-4 text-right transition ${
+                onClick={() => handleOfferSelect(item)}
+                className={`rounded-3xl border p-3 text-right transition ${
                   selectedOffer === item.id
                     ? "border-[#0f766e] bg-[#0f766e] text-white shadow-lg"
                     : "border-[#e0d6c9] bg-white text-[#191613]"
@@ -165,7 +173,7 @@ export default function Home() {
 
           <a
             href="#order"
-            className="cta-shake mt-8 inline-block rounded-2xl bg-[#0f766e] px-8 py-2.5 text-center text-lg font-bold text-white shadow-lg transition hover:bg-[#115e59]"
+            className="cta-shake mt-6 inline-block rounded-2xl bg-[#0f766e] px-6 py-2.5 text-center text-lg font-bold text-white shadow-lg transition hover:bg-[#115e59]"
           >
             حوّل أجواء غرفتك الآن
           </a>
@@ -184,14 +192,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="order" className="mx-auto max-w-[1120px] px-4 pt-3 pb-5 sm:px-6 lg:px-8">
-        <div className="rounded-[1.6rem] bg-white p-4 shadow-2xl sm:p-4">
-  <div className="mb-3 rounded-2xl bg-[#0f766e] px-5 py-3 text-white">
+      <section id="order" className="mx-auto max-w-[1120px] px-4 pt-2 pb-4 sm:px-6 lg:px-8">
+        <div className="rounded-[1.5rem] bg-white p-3 shadow-2xl sm:p-4">
+  <div className="mb-3 rounded-2xl bg-[#0f766e] px-4 py-3 text-white">
     <p className="inline-flex rounded-full bg-white px-3 py-1 text-sm font-black tracking-tight text-[#0f766e]">
       طلبك الحالي
     </p>
 
-    <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+    <div className="mt-1.5 flex flex-col gap-1.5 sm:flex-row sm:items-end sm:justify-between">
       <div>
         <p className="mt-1 text-2xl font-black">{offer.label}</p>
       </div>
@@ -199,38 +207,38 @@ export default function Home() {
       <p className="text-3xl font-black">{offer.price}</p>
     </div>
 
-    <p className="mt-2 text-sm text-white/75">
+    <p className="mt-1.5 text-sm text-white/75">
       الدفع عند الاستلام — تأكيد الطلب عبر واتساب قبل التجهيز
     </p>
   </div>
 
-  <form onSubmit={handleSubmit} className="space-y-5">
+  <form onSubmit={handleSubmit} className="space-y-3">
             
 
             <div>
-              <label className="mb-2 block font-bold">الاسم الشخصي *</label>
+              <label className="mb-1.5 block font-bold">الاسم الشخصي *</label>
               <input
                 required
                 value={fullName}
                 onChange={(event) => setFullName(event.target.value)}
                 placeholder="نورة"
-                className="w-full rounded-2xl border border-[#e0d6c9] bg-[#fffaf2] px-4 py-4 text-lg outline-none focus:border-[#0f766e]"
+                className="w-full rounded-2xl border border-[#e0d6c9] bg-[#fffaf2] px-4 py-2.5 text-lg outline-none focus:border-[#0f766e]"
               />
             </div>
 
             <div>
-              <label className="mb-2 block font-bold">رقم الجوال *</label>
+              <label className="mb-1.5 block font-bold">رقم الجوال *</label>
               <input
                 required
                 value={phone}
                 onChange={(event) => setPhone(event.target.value)}
                 placeholder="05xxxxxxxx"
-                className="w-full rounded-2xl border border-[#e0d6c9] bg-[#fffaf2] px-4 py-4 text-lg outline-none focus:border-[#0f766e]"
+                className="w-full rounded-2xl border border-[#e0d6c9] bg-[#fffaf2] px-4 py-2.5 text-lg outline-none focus:border-[#0f766e]"
               />
             </div>
 
             <div>
-              <label className="mb-2 block font-bold">
+              <label className="mb-1.5 block font-bold">
                 المدينة{" "}
                 <span className="text-sm font-normal text-[#7a7068]">
                   (اختياري)
@@ -240,18 +248,18 @@ export default function Home() {
                 value={city}
                 onChange={(event) => setCity(event.target.value)}
                 placeholder="مثال: الرياض"
-                className="w-full rounded-2xl border border-[#e0d6c9] bg-[#fffaf2] px-4 py-4 text-lg outline-none focus:border-[#0f766e]"
+                className="w-full rounded-2xl border border-[#e0d6c9] bg-[#fffaf2] px-4 py-2.5 text-lg outline-none focus:border-[#0f766e]"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full rounded-2xl bg-[#0f766e] px-8 py-5 text-xl font-black text-white shadow-lg transition hover:bg-[#115e59]"
+              className="w-full rounded-2xl bg-[#0f766e] px-8 py-4 text-xl font-black text-white shadow-lg transition hover:bg-[#115e59]"
             >
               تأكيد الطلب عبر واتساب
             </button>
 
-            <p className="text-center text-base font-black leading-8 text-[#5f574f]">
+            <p className="text-center text-base font-black leading-6 text-[#5f574f]">
               لن يتم تجهيز الطلب قبل تأكيده عبر واتساب.
             </p>
           </form>
@@ -302,7 +310,7 @@ export default function Home() {
     </p>
   </div>
 
-  <div className="mt-5 grid gap-5 md:grid-cols-3">
+  <div className="mt-4 grid gap-4 md:grid-cols-3">
     {[
       {
         title: "إضاءة تشبه شكل اللهب",
@@ -319,13 +327,13 @@ export default function Home() {
     ].map((item) => (
       <div
         key={item.title}
-      className="rounded-[1.25rem] bg-white p-3 text-center shadow-sm"
+      className="rounded-[1.25rem] bg-white p-2.5 text-center shadow-sm sm:p-3"
 >
   <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-[#0f766e] text-sm font-black text-white">
     ✓
   </div>
-  <h3 className="mt-2.5 text-base font-black">{item.title}</h3>
-  <p className="mt-1.5 text-sm leading-6 text-[#5f574f]">{item.text}</p>
+  <h3 className="mt-2 text-base font-black">{item.title}</h3>
+  <p className="mt-1.5 text-sm leading-5 text-[#5f574f]">{item.text}</p>
 </div>
     ))}
   </div>
