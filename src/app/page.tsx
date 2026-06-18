@@ -419,8 +419,8 @@ export default function Home() {
   
 </section>
 
-      <section className="mx-auto max-w-[1040px] px-4 pt-1 pb-8 sm:px-6 lg:px-8">
-  <div className="rounded-[1.75rem] bg-[#191613] px-5 py-5 text-white sm:px-6 sm:py-6">
+    <section className="mx-auto max-w-[1040px] px-1 pt-1 pb-8 sm:px-2 lg:px-3">
+  <div className="rounded-[1.75rem] bg-[#191613] px-1.5 py-5 text-white sm:px-2 sm:py-6 lg:px-3">
     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <h2 className="text-2xl font-black sm:text-3xl">طريقة الاستخدام</h2>
@@ -434,7 +434,7 @@ export default function Home() {
       </span>
     </div>
 
-    <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <div className="mt-5 grid gap-x-2 gap-y-4 md:grid-cols-2 xl:grid-cols-3">
       {[
         {
           number: 1,
@@ -478,20 +478,21 @@ export default function Home() {
           className="overflow-hidden rounded-[1.35rem] bg-white text-[#191613] shadow-sm"
         >
           <div className="relative flex h-[190px] items-center justify-center bg-[#f7f2ea] p-1.5">
-            <img
-              src={item.image}
-              alt={item.title}
-              className="h-full w-full rounded-[1rem] object-contain"
-            />
-
+<img
+  src={item.image}
+  alt={item.title}
+  className={`h-full rounded-[1rem] object-contain ${
+    item.number === 6 ? "mx-auto w-auto max-w-[190px]" : "w-full"
+  }`}
+/>
             <div className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-[#0f766e] text-sm font-black text-white shadow-md">
               {item.number}
             </div>
           </div>
 
-          <div className="h-[92px] px-4 py-3">
+          <div className="min-h-[106px] px-4 py-3">
   <h3 className="text-base font-black leading-6">{item.title}</h3>
-  <p className="mt-2 text-base font-medium leading-7 text-[#5f574f]">
+  <p className="mt-2 text-base font-medium leading-7 text-[#5f574f] sm:text-lg sm:leading-8">
     {item.text}
   </p>
 </div>
@@ -506,9 +507,9 @@ export default function Home() {
 
     <a
       href="#order"
-      className="mt-4 block rounded-2xl bg-white px-8 py-3 text-center text-base font-black text-[#191613]"
-    >
-      أضف لمسة هادئة لغرفتك
+className="mt-4 block rounded-2xl bg-white px-8 py-3.5 text-center text-xl font-black leading-8 text-[#191613] sm:text-2xl"
+>
+  أضف لمسة هادئة لغرفتك
     </a>
   </div>
 </section>
@@ -523,7 +524,7 @@ export default function Home() {
             <summary className="cursor-pointer font-black">
               هل المنتج طبي؟
             </summary>
-            <p className="mt-3 leading-8 text-[#5f574f]">
+            <p className="mt-3 text-base font-medium leading-8 text-[#5f574f] sm:text-lg sm:leading-9">
               لا. المنتج غير طبي ولا يعالج أي حالة صحية. استخدامه مخصص لتجربة
               الرذاذ والإضاءة والروائح داخل الغرفة فقط.
             </p>
@@ -533,7 +534,7 @@ export default function Home() {
             <summary className="cursor-pointer font-black">
               هل الزيت العطري ضروري؟
             </summary>
-            <p className="mt-3 leading-8 text-[#5f574f]">
+            <p className="mt-3 text-base font-medium leading-8 text-[#5f574f] sm:text-lg sm:leading-9">
               يمكن استخدام الجهاز مع الماء، وإضافة الزيت العطري اختيارية حسب
               الرغبة. عند استخدام الزيت، تكفي 2 إلى 3 قطرات فقط.
             </p>
@@ -543,7 +544,7 @@ export default function Home() {
             <summary className="cursor-pointer font-black">
               هل يوجد دفع عند الاستلام؟
             </summary>
-            <p className="mt-3 leading-8 text-[#5f574f]">
+            <p className="mt-3 text-base font-medium leading-8 text-[#5f574f] sm:text-lg sm:leading-9">
               نعم، الدفع عند الاستلام متاح حسب توفر الخدمة. يتم تأكيد الطلب عبر
               واتساب قبل التجهيز.
             </p>
