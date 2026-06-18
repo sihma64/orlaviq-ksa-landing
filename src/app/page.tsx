@@ -152,33 +152,33 @@ export default function Home() {
 بإحساس هادئ ومريح. مناسب لغرفة النوم، المجلس، أو المكتب.
           </p>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          <div className="mt-3 grid gap-2 sm:grid-cols-3">
             {offers.map((item) => (
               <button
                 key={item.id}
                 type="button"
                 onClick={() => handleOfferSelect(item)}
-                className={`rounded-3xl border p-3 text-right transition ${
+                className={`rounded-xl border p-2 text-right transition ${
                   selectedOffer === item.id
                     ? "border-[#0f766e] bg-[#0f766e] text-white shadow-lg"
                     : "border-[#e0d6c9] bg-white text-[#191613]"
                 }`}
               >
-                <p className="text-lg font-black">{item.label}</p>
-                <p className="mt-1.5 text-2xl font-black">{item.price}</p>
-                <p className="mt-1 text-sm opacity-80">{item.note}</p>
+                <p className="text-base font-black">{item.label}</p>
+                <p className="mt-1 text-2xl font-black">{item.price}</p>
+                <p className="mt-1 text-xs opacity-80">{item.note}</p>
               </button>
             ))}
           </div>
 
           <a
             href="#order"
-            className="cta-shake mt-6 inline-block rounded-2xl bg-[#0f766e] px-6 py-2.5 text-center text-lg font-bold text-white shadow-lg transition hover:bg-[#115e59]"
+            className="cta-shake mt-3 inline-block rounded-xl bg-[#0f766e] px-5 py-2 text-center text-base font-bold text-white shadow-lg transition hover:bg-[#115e59]"
           >
             حوّل أجواء غرفتك الآن
           </a>
 
-          <p className="mt-4 text-lg font-medium leading-8 text-[#7a7068]">
+          <p className="mt-2 text-base font-medium leading-6 text-[#7a7068]">
             بعد تسجيل الطلب، يتم تأكيده عبر واتساب قبل التجهيز.
           </p>
         </div>
@@ -192,9 +192,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="order" className="mx-auto max-w-[1120px] px-4 pt-2 pb-4 sm:px-6 lg:px-8">
-        <div className="rounded-[1.5rem] bg-white p-3 shadow-2xl sm:p-4">
-  <div className="mb-3 rounded-2xl bg-[#0f766e] px-4 py-3 text-white">
+      <section id="order" className="mx-auto max-w-[1120px] px-4 pt-1 pb-3 sm:px-6 lg:px-8">
+        <div className="rounded-xl bg-white p-2.5 shadow-xl sm:p-3">
+  <div className="mb-2 rounded-xl bg-[#0f766e] px-3 py-2 text-white">
     <p className="inline-flex rounded-full bg-white px-3 py-1 text-sm font-black tracking-tight text-[#0f766e]">
       طلبك الحالي
     </p>
@@ -212,35 +212,35 @@ export default function Home() {
     </p>
   </div>
 
-  <form onSubmit={handleSubmit} className="space-y-3">
+  <form onSubmit={handleSubmit} className="space-y-2">
             
 
             <div>
-              <label className="mb-1.5 block font-bold">الاسم الشخصي *</label>
+              <label className="mb-1 block text-sm font-bold">الاسم الشخصي *</label>
               <input
                 required
                 value={fullName}
                 onChange={(event) => setFullName(event.target.value)}
                 placeholder="نورة"
-                className="w-full rounded-2xl border border-[#e0d6c9] bg-[#fffaf2] px-4 py-2.5 text-lg outline-none focus:border-[#0f766e]"
+                className="w-full rounded-xl border border-[#e0d6c9] bg-[#fffaf2] px-3 py-2 text-base outline-none focus:border-[#0f766e]"
               />
             </div>
 
             <div>
-              <label className="mb-1.5 block font-bold">رقم الجوال *</label>
+              <label className="mb-1 block text-sm font-bold">رقم الجوال *</label>
               <input
                 required
                 value={phone}
                 onChange={(event) => setPhone(event.target.value)}
                 placeholder="05xxxxxxxx"
-                className="w-full rounded-2xl border border-[#e0d6c9] bg-[#fffaf2] px-4 py-2.5 text-lg outline-none focus:border-[#0f766e]"
+                className="w-full rounded-xl border border-[#e0d6c9] bg-[#fffaf2] px-3 py-2 text-base outline-none focus:border-[#0f766e]"
               />
             </div>
 
             <div>
-              <label className="mb-1.5 block font-bold">
+              <label className="mb-1 block text-sm font-bold">
                 المدينة{" "}
-                <span className="text-sm font-normal text-[#7a7068]">
+                <span className="text-xs font-normal text-[#7a7068]">
                   (اختياري)
                 </span>
               </label>
@@ -248,13 +248,13 @@ export default function Home() {
                 value={city}
                 onChange={(event) => setCity(event.target.value)}
                 placeholder="مثال: الرياض"
-                className="w-full rounded-2xl border border-[#e0d6c9] bg-[#fffaf2] px-4 py-2.5 text-lg outline-none focus:border-[#0f766e]"
+                className="w-full rounded-xl border border-[#e0d6c9] bg-[#fffaf2] px-3 py-2 text-base outline-none focus:border-[#0f766e]"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full rounded-2xl bg-[#0f766e] px-8 py-4 text-xl font-black text-white shadow-lg transition hover:bg-[#115e59]"
+              className="w-full rounded-xl bg-[#0f766e] px-6 py-3 text-lg font-black text-white shadow-lg transition hover:bg-[#115e59]"
             >
               تأكيد الطلب عبر واتساب
             </button>
@@ -266,24 +266,24 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white px-4 py-8 sm:px-6 lg:px-8">
-  <div className="mx-auto max-w-[1040px] rounded-[1.75rem] border border-[#eadfce] bg-[#fffaf2] px-5 py-7 sm:px-7 sm:py-8">
+      <section className="bg-white px-4 py-4 sm:px-6 lg:px-8">
+  <div className="mx-auto max-w-[1040px] rounded-xl border border-[#eadfce] bg-[#fffaf2] px-4 py-4 sm:px-5 sm:py-5">
     <div className="text-center">
-      <p className="text-base font-black text-[#0f766e]">
+      <p className="text-sm font-black text-[#0f766e]">
         مناسب للاستخدام اليومي
       </p>
 
-      <h2 className="mt-3 text-2xl font-black leading-tight sm:text-3xl">
+      <h2 className="mt-1.5 text-xl font-black leading-tight sm:text-2xl">
         مناسب لهذه المساحات داخل البيت
       </h2>
 
-      <p className="mx-auto mt-4 max-w-3xl text-base font-medium leading-8 text-[#5f574f]">
+      <p className="mx-auto mt-2 max-w-3xl text-sm font-medium leading-6 text-[#5f574f]">
         يمكن وضع موزع الروائح على طاولة جانبية أو مكتب أو زاوية ديكور لإضافة
         إضاءة دافئة ورذاذ ناعم داخل الغرفة.
       </p>
     </div>
 
-    <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
       {[
         "غرفة النوم",
         "المجلس",
@@ -292,7 +292,7 @@ export default function Home() {
       ].map((item) => (
         <div
           key={item}
-          className="rounded-2xl border border-[#eadfce] bg-white px-4 py-3.5 text-center text-base font-black shadow-sm"
+          className="rounded-xl border border-[#eadfce] bg-white px-3 py-2.5 text-center text-sm font-black shadow-sm"
         >
           {item}
         </div>
@@ -301,16 +301,16 @@ export default function Home() {
   </div>
 </section>
 
-      <section className="mx-auto max-w-[1120px] px-4 pt-5 pb-4 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-[1120px] px-4 pt-2 pb-2 sm:px-6 lg:px-8">
   <div className="text-center">
-    <h2 className="text-3xl font-black">ما الذي يميز ORLAVIQ؟</h2>
-    <p className="mx-auto mt-2 max-w-2xl leading-7 text-[#5f574f]">
+    <h2 className="text-2xl font-black sm:text-3xl">ما الذي يميز ORLAVIQ؟</h2>
+    <p className="mx-auto mt-1.5 max-w-2xl text-sm leading-6 text-[#5f574f]">
       موزع روائح بتصميم ديكوري يجمع بين الرذاذ الناعم والإضاءة الدافئة ليضيف
       لمسة مختلفة لغرفتك.
     </p>
   </div>
 
-  <div className="mt-4 grid gap-4 md:grid-cols-3">
+  <div className="mt-3 grid gap-3 md:grid-cols-3">
     {[
       {
         title: "إضاءة تشبه شكل اللهب",
@@ -327,13 +327,13 @@ export default function Home() {
     ].map((item) => (
       <div
         key={item.title}
-      className="rounded-[1.25rem] bg-white p-2.5 text-center shadow-sm sm:p-3"
+      className="rounded-xl bg-white p-2 text-center shadow-sm"
 >
-  <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-[#0f766e] text-sm font-black text-white">
+  <div className="mx-auto flex h-7 w-7 items-center justify-center rounded-full bg-[#0f766e] text-xs font-black text-white">
     ✓
   </div>
-  <h3 className="mt-2 text-base font-black">{item.title}</h3>
-  <p className="mt-1.5 text-sm leading-5 text-[#5f574f]">{item.text}</p>
+  <h3 className="mt-1.5 text-sm font-black">{item.title}</h3>
+  <p className="mt-1 text-xs leading-4 text-[#5f574f]">{item.text}</p>
 </div>
     ))}
   </div>
