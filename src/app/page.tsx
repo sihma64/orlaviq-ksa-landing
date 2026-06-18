@@ -150,14 +150,14 @@ export default function Home() {
                     offer_price: item.price,
                   });
                 }}
-                className={`rounded-3xl border p-5 text-right transition ${
+                className={`rounded-3xl border p-4 text-right transition ${
                   selectedOffer === item.id
                     ? "border-[#0f766e] bg-[#0f766e] text-white shadow-lg"
                     : "border-[#e0d6c9] bg-white text-[#191613]"
                 }`}
               >
                 <p className="text-lg font-black">{item.label}</p>
-                <p className="mt-2 text-2xl font-black">{item.price}</p>
+                <p className="mt-1.5 text-2xl font-black">{item.price}</p>
                 <p className="mt-1 text-sm opacity-80">{item.note}</p>
               </button>
             ))}
@@ -165,7 +165,7 @@ export default function Home() {
 
           <a
             href="#order"
-            className="cta-shake mt-8 inline-block rounded-2xl bg-[#0f766e] px-8 py-4 text-center text-lg font-bold text-white shadow-lg transition hover:bg-[#115e59]"
+            className="cta-shake mt-8 inline-block rounded-2xl bg-[#0f766e] px-8 py-2.5 text-center text-lg font-bold text-white shadow-lg transition hover:bg-[#115e59]"
           >
             حوّل أجواء غرفتك الآن
           </a>
@@ -184,24 +184,22 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="order" className="mx-auto max-w-[1120px] px-4 pt-2 pb-8 sm:px-6 lg:px-8">
-        <div className="rounded-[1.6rem] bg-white p-4 shadow-2xl sm:p-5">
-  <div className="mb-4 rounded-2xl bg-[#0f766e] px-5 py-2.5 text-white">
+      <section id="order" className="mx-auto max-w-[1120px] px-4 pt-3 pb-5 sm:px-6 lg:px-8">
+        <div className="rounded-[1.6rem] bg-white p-4 shadow-2xl sm:p-4">
+  <div className="mb-3 rounded-2xl bg-[#0f766e] px-5 py-3 text-white">
     <p className="inline-flex rounded-full bg-white px-3 py-1 text-sm font-black tracking-tight text-[#0f766e]">
       طلبك الحالي
-
     </p>
 
     <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        
         <p className="mt-1 text-2xl font-black">{offer.label}</p>
       </div>
 
       <p className="text-3xl font-black">{offer.price}</p>
     </div>
 
-    <p className="mt-3 text-sm text-white/75">
+    <p className="mt-2 text-sm text-white/75">
       الدفع عند الاستلام — تأكيد الطلب عبر واتساب قبل التجهيز
     </p>
   </div>
@@ -321,14 +319,14 @@ export default function Home() {
     ].map((item) => (
       <div
         key={item.title}
-        className="rounded-[2rem] bg-white p-6 text-center shadow-sm"
-      >
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#0f766e] text-xl font-black text-white">
-          ✓
-        </div>
-        <h3 className="mt-5 text-xl font-black">{item.title}</h3>
-        <p className="mt-3 leading-8 text-[#5f574f]">{item.text}</p>
-      </div>
+      className="rounded-[1.25rem] bg-white p-3 text-center shadow-sm"
+>
+  <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-[#0f766e] text-sm font-black text-white">
+    ✓
+  </div>
+  <h3 className="mt-2.5 text-base font-black">{item.title}</h3>
+  <p className="mt-1.5 text-sm leading-6 text-[#5f574f]">{item.text}</p>
+</div>
     ))}
   </div>
 
