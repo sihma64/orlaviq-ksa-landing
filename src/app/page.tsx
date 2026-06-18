@@ -147,29 +147,47 @@ export default function Home() {
            إضاءة دافئة ورذاذ يضيفان لمسة هادئة لغرفتك
           </h1>
 
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-[#5f574f]">
-              موزع روائح أنيق يجمع بين الرذاذ والإضاءة ليمنح غرفتك مظهراً دافئاً
+          <p className="mt-4 max-w-2xl text-lg font-medium leading-8 text-[#5f574f] sm:text-xl sm:leading-9">
+  موزع روائح أنيق يجمع بين الرذاذ والإضاءة ليمنح غرفتك مظهراً دافئاً
 بإحساس هادئ ومريح. مناسب لغرفة النوم، المجلس، أو المكتب.
-          </p>
+</p>
 
           <div className="mt-3 grid gap-2 sm:grid-cols-3">
-            {offers.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => handleOfferSelect(item)}
-                className={`rounded-xl border p-2 text-right transition ${
-                  selectedOffer === item.id
-                    ? "border-[#0f766e] bg-[#0f766e] text-white shadow-lg"
-                    : "border-[#e0d6c9] bg-white text-[#191613]"
-                }`}
-              >
-                <p className="text-base font-black">{item.label}</p>
-                <p className="mt-1 text-2xl font-black">{item.price}</p>
-                <p className="mt-1 text-xs opacity-80">{item.note}</p>
-              </button>
-            ))}
-          </div>
+  {offers.map((item) => {
+    const isSelected = selectedOffer === item.id;
+
+    return (
+      <button
+        key={item.id}
+        type="button"
+        onClick={() => handleOfferSelect(item)}
+        className={`rounded-xl border p-2 text-right transition ${
+          isSelected
+            ? "border-[#0f766e] bg-[#0f766e] text-white shadow-lg"
+            : "border-[#e0d6c9] bg-white text-[#191613]"
+        }`}
+      >
+        <div className="flex items-center justify-start gap-2">
+  <span
+    aria-hidden="true"
+    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 bg-white ${
+      isSelected ? "border-white" : "border-[#d9cbb8]"
+    }`}
+  >
+    {isSelected && (
+      <span className="h-2.5 w-2.5 rounded-full bg-[#0f766e]" />
+    )}
+  </span>
+
+  <p className="text-base font-black">{item.label}</p>
+</div>
+
+        <p className="mt-1 text-2xl font-black">{item.price}</p>
+        <p className="mt-1 text-sm font-medium leading-5 opacity-85">{item.note}</p>
+      </button>
+    );
+  })}
+</div>
 
           <a
             href="#order"
@@ -178,9 +196,9 @@ export default function Home() {
             حوّل أجواء غرفتك الآن
           </a>
 
-          <p className="mt-2 text-base font-medium leading-6 text-[#7a7068]">
-            بعد تسجيل الطلب، يتم تأكيده عبر واتساب قبل التجهيز.
-          </p>
+          <p className="mt-3 text-center text-lg font-medium leading-8 text-[#7a7068]">
+  بعد تسجيل الطلب، يتم تأكيده عبر واتساب قبل التجهيز.
+</p>
         </div>
 
         <div className="order-1 mx-auto w-full max-w-[320px] rounded-[2rem] bg-white p-3 shadow-2xl lg:order-2 lg:ml-0 lg:mr-auto lg:max-w-[340px]">
@@ -269,7 +287,7 @@ export default function Home() {
       <section className="bg-white px-4 py-4 sm:px-6 lg:px-8">
   <div className="mx-auto max-w-[1040px] rounded-xl border border-[#eadfce] bg-[#fffaf2] px-4 py-4 sm:px-5 sm:py-5">
     <div className="text-center">
-      <p className="text-sm font-black text-[#0f766e]">
+      <p className="text-base font-black text-[#0f766e] sm:text-lg">
         مناسب للاستخدام اليومي
       </p>
 
@@ -277,10 +295,9 @@ export default function Home() {
         مناسب لهذه المساحات داخل البيت
       </h2>
 
-      <p className="mx-auto mt-2 max-w-3xl text-sm font-medium leading-6 text-[#5f574f]">
-        يمكن وضع موزع الروائح على طاولة جانبية أو مكتب أو زاوية ديكور لإضافة
-        إضاءة دافئة ورذاذ ناعم داخل الغرفة.
-      </p>
+      <p className="mt-3 text-base font-medium leading-8 text-[#5f574f] sm:text-lg sm:leading-9">
+  يمكن وضع موزع الروائح على طاولة جانبية أو مكتب أو زاوية ديكور لإضافة إضاءة دافئة ورذاذ ناعم داخل الغرفة.
+</p>
     </div>
 
     <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
@@ -292,7 +309,7 @@ export default function Home() {
       ].map((item) => (
         <div
           key={item}
-          className="rounded-xl border border-[#eadfce] bg-white px-3 py-2.5 text-center text-sm font-black shadow-sm"
+          className="rounded-2xl border border-[#eadfce] bg-white px-4 py-3 text-center text-lg font-black shadow-sm sm:text-xl"
         >
           {item}
         </div>
@@ -304,10 +321,10 @@ export default function Home() {
       <section className="mx-auto max-w-[1120px] px-4 pt-2 pb-2 sm:px-6 lg:px-8">
   <div className="text-center">
     <h2 className="text-2xl font-black sm:text-3xl">ما الذي يميز ORLAVIQ؟</h2>
-    <p className="mx-auto mt-1.5 max-w-2xl text-sm leading-6 text-[#5f574f]">
-      موزع روائح بتصميم ديكوري يجمع بين الرذاذ الناعم والإضاءة الدافئة ليضيف
-      لمسة مختلفة لغرفتك.
-    </p>
+    <p className="mx-auto mt-2 max-w-2xl text-base font-medium leading-7 text-[#5f574f] sm:text-lg sm:leading-8">
+  موزع روائح بتصميم ديكوري يجمع بين الرذاذ الناعم والإضاءة الدافئة ليضيف
+  لمسة مختلفة لغرفتك.
+</p>
   </div>
 
   <div className="mt-3 grid gap-3 md:grid-cols-3">
@@ -332,8 +349,10 @@ export default function Home() {
   <div className="mx-auto flex h-7 w-7 items-center justify-center rounded-full bg-[#0f766e] text-xs font-black text-white">
     ✓
   </div>
-  <h3 className="mt-1.5 text-sm font-black">{item.title}</h3>
-  <p className="mt-1 text-xs leading-4 text-[#5f574f]">{item.text}</p>
+ <h3 className="mt-2 text-lg font-black sm:text-xl">{item.title}</h3>
+<p className="mt-2 text-base font-medium leading-7 text-[#5f574f] sm:text-lg sm:leading-8">
+  {item.text}
+</p>
 </div>
     ))}
   </div>
@@ -392,7 +411,7 @@ export default function Home() {
     </div>
   </div>
 
- <p className="mx-auto mt-3 max-w-3xl rounded-2xl bg-white px-4 py-3 text-center text-base leading-6 text-[#7a7068] shadow-sm">
+ <p className="mx-auto mt-4 max-w-4xl rounded-2xl bg-white px-5 py-4 text-center text-lg font-medium leading-8 text-[#5f574f] shadow-sm sm:text-xl sm:leading-9">
     ملاحظة: المنتج غير طبي ولا يحتوي على لهب حقيقي. التأثير الظاهر ناتج عن
     الإضاءة والرذاذ فقط.
   </p>
@@ -405,12 +424,12 @@ export default function Home() {
     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <h2 className="text-2xl font-black sm:text-3xl">طريقة الاستخدام</h2>
-        <p className="mt-1.5 max-w-2xl text-sm leading-6 text-white/70">
+        <p className="mt-2 text-base font-medium leading-7 text-white/80 sm:text-lg sm:leading-8">
           ست خطوات بسيطة لتشغيل موزع الروائح والاستمتاع بتأثير الضوء والرذاذ داخل الغرفة.
         </p>
       </div>
 
-      <span className="w-fit rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-white/80">
+      <span className="inline-flex rounded-2xl bg-white/10 px-5 py-3 text-base font-black text-white sm:text-lg">
         6 خطوات فقط
       </span>
     </div>
