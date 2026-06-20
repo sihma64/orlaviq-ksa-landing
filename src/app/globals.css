@@ -71,3 +71,196 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+/* ORLAVIQ Premium Flame & Mist Animation */
+
+/* Flame glow - warm ambient light at the base */
+.orlaviq-flame-glow {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, rgba(255, 140, 50, 0.6) 0%, rgba(255, 100, 30, 0.3) 40%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(12px);
+  animation: orlaviq-glow-pulse 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes orlaviq-glow-pulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.15);
+  }
+}
+
+/* Flame shimmer - flickering flame effect */
+.orlaviq-flame-shimmer {
+  position: absolute;
+  bottom: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 50px;
+  background: linear-gradient(to top, rgba(255, 120, 40, 0.5) 0%, rgba(255, 180, 80, 0.4) 50%, rgba(255, 220, 150, 0.2) 100%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  filter: blur(4px);
+  animation: orlaviq-flame-flicker 2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes orlaviq-flame-flicker {
+  0%, 100% {
+    opacity: 0.6;
+    transform: translateX(-50%) scaleY(1) scaleX(1);
+  }
+  25% {
+    opacity: 0.8;
+    transform: translateX(-48%) scaleY(1.1) scaleX(0.95);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateX(-52%) scaleY(0.95) scaleX(1.05);
+  }
+  75% {
+    opacity: 0.85;
+    transform: translateX(-50%) scaleY(1.05) scaleX(0.98);
+  }
+}
+
+/* Mist plume 1 - rising vapor effect */
+.orlaviq-mist-plume-1 {
+  position: absolute;
+  bottom: 25%;
+  left: 48%;
+  width: 40px;
+  height: 60px;
+  background: radial-gradient(ellipse at center, rgba(200, 220, 240, 0.25) 0%, rgba(180, 200, 220, 0.15) 40%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(8px);
+  animation: orlaviq-mist-rise-1 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 3;
+}
+
+@keyframes orlaviq-mist-rise-1 {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.8);
+  }
+  20% {
+    opacity: 0.4;
+  }
+  80% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-80px) scale(1.3);
+  }
+}
+
+/* Mist plume 2 - second vapor layer for depth */
+.orlaviq-mist-plume-2 {
+  position: absolute;
+  bottom: 25%;
+  left: 52%;
+  width: 35px;
+  height: 55px;
+  background: radial-gradient(ellipse at center, rgba(210, 225, 240, 0.2) 0%, rgba(190, 210, 230, 0.12) 40%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(10px);
+  animation: orlaviq-mist-rise-2 5s ease-in-out infinite;
+  animation-delay: 1.5s;
+  pointer-events: none;
+  z-index: 3;
+}
+
+@keyframes orlaviq-mist-rise-2 {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.7);
+  }
+  25% {
+    opacity: 0.35;
+  }
+  75% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-90px) scale(1.4);
+  }
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 640px) {
+  .orlaviq-flame-glow {
+    width: 50px;
+    height: 50px;
+    bottom: 18%;
+  }
+  
+  .orlaviq-flame-shimmer {
+    width: 25px;
+    height: 40px;
+    bottom: 20%;
+  }
+  
+  .orlaviq-mist-plume-1,
+  .orlaviq-mist-plume-2 {
+    width: 30px;
+    height: 50px;
+    bottom: 28%;
+  }
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .orlaviq-flame-glow,
+  .orlaviq-flame-shimmer,
+  .orlaviq-mist-plume-1,
+  .orlaviq-mist-plume-2 {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .mobile-shake-cta {
+    animation: orlaviqMobileShake 1.8s ease-in-out infinite;
+    transform-origin: center;
+    will-change: transform;
+  }
+}
+
+@keyframes orlaviqMobileShake {
+  0%,
+  82%,
+  100% {
+    transform: translateX(0);
+  }
+
+  86% {
+    transform: translateX(-3px);
+  }
+
+  90% {
+    transform: translateX(3px);
+  }
+
+  94% {
+    transform: translateX(-2px);
+  }
+
+  98% {
+    transform: translateX(2px);
+  }
+}

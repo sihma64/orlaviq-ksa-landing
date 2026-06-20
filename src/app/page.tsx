@@ -513,7 +513,7 @@ export default function Home() {
 
     <a
       href="#order"
-className="mt-4 block rounded-2xl bg-white px-8 py-3.5 text-center text-xl font-black leading-8 text-[#191613] sm:text-2xl"
+className="mobile-shake-cta mt-4 block rounded-2xl bg-white px-8 py-3.5 text-center text-xl font-black leading-8 text-[#191613] sm:text-2xl"
 >
   أضف لمسة هادئة لغرفتك
     </a>
