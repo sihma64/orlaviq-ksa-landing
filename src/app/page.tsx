@@ -202,20 +202,27 @@ export default function Home() {
         </div>
 
         <div className="order-1 mx-auto w-full max-w-[320px] rounded-[2rem] bg-white p-3 shadow-2xl lg:order-2 lg:ml-0 lg:mr-auto lg:max-w-[340px]">
-          <img
-  src="/images/how-to/howto-05-power-on.webp"
-  alt="موزع روائح بإضاءة دافئة ورذاذ ناعم"
-  className="h-full w-full rounded-[1.5rem] object-cover"
-/>
-        </div>
+  <div className="relative isolate overflow-hidden rounded-[1.5rem] bg-[#f7f2ea]">
+    <img
+      src="/images/orlaviq-hero-majlis.webp"
+      alt="موزع روائح بإضاءة دافئة ورذاذ ناعم"
+      className="relative z-10 block w-full rounded-[1.5rem] object-cover"
+    />
+
+    <div className="orlaviq-flame-glow" />
+    <div className="orlaviq-flame-shimmer" />
+    <div className="orlaviq-mist-plume-1" />
+    <div className="orlaviq-mist-plume-2" />
+  </div>
+</div>
       </section>
 
       <section id="order" className="mx-auto max-w-[1120px] px-4 pt-1 pb-3 sm:px-6 lg:px-8">
         <div className="rounded-xl bg-white p-2.5 shadow-xl sm:p-3">
   <div className="mb-2 rounded-xl bg-[#0f766e] px-3 py-2 text-white">
-    <p className="inline-flex rounded-full bg-white px-3 py-1 text-sm font-black tracking-tight text-[#0f766e]">
-      طلبك الحالي
-    </p>
+   <p className="inline-flex rounded-full bg-white px-4 py-1.5 text-base font-black tracking-tight text-[#0f766e] ring-1 ring-white/70">
+  طلبك الحالي
+</p>
 
     <div className="mt-1.5 flex flex-col gap-1.5 sm:flex-row sm:items-end sm:justify-between">
       <div>
@@ -284,8 +291,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white px-4 py-4 sm:px-6 lg:px-8">
-  <div className="mx-auto max-w-[1040px] rounded-xl border border-[#eadfce] bg-[#fffaf2] px-4 py-4 sm:px-5 sm:py-5">
+      <section className="mx-auto w-full max-w-[1120px] px-4 py-4 sm:px-6 lg:px-8">
+  <div className="rounded-xl border border-[#eadfce] bg-[#fffaf2] px-4 py-4 sm:px-5 sm:py-5">
     <div className="text-center">
       <p className="text-base font-black text-[#0f766e] sm:text-lg">
         مناسب للاستخدام اليومي
@@ -318,7 +325,7 @@ export default function Home() {
   </div>
 </section>
 
-      <section className="mx-auto max-w-[1120px] px-4 pt-2 pb-2 sm:px-6 lg:px-8">
+      <section className="mx-auto w-full max-w-[1120px] px-4 pt-2 pb-2 sm:px-6 lg:px-8">
   <div className="text-center">
     <h2 className="text-2xl font-black sm:text-3xl">ما الذي يميز ORLAVIQ؟</h2>
     <p className="mx-auto mt-2 max-w-2xl text-base font-medium leading-7 text-[#5f574f] sm:text-lg sm:leading-8">
@@ -356,18 +363,19 @@ export default function Home() {
 </div>
     ))}
   </div>
+</section>
 
-  <section className="mx-auto max-w-[1040px] px-4 pt-8 pb-0 sm:px-6 lg:px-8">
-  <div className="overflow-hidden rounded-[2rem] bg-white shadow-sm ring-1 ring-[#eadfce]">
-    <div className="border-b border-[#eadfce] px-6 py-6 text-right">
-      <h2 className="text-3xl font-black">مواصفات المنتج</h2>
-      <p className="mt-2 text-base font-medium leading-8 text-[#5f574f]">
-        تفاصيل مختصرة لمساعدتك على معرفة حجم المنتج وطريقة تشغيله.
-      </p>
-    </div>
+      <section className="mx-auto w-full max-w-[1120px] px-4 pt-8 pb-0 sm:px-6 lg:px-8">
+  <div className="w-full overflow-hidden rounded-[2rem] bg-white shadow-sm ring-1 ring-[#eadfce]">
+   <div className="border-b border-[#eadfce] px-6 py-5 text-right">
+  <h2 className="text-3xl font-black">مواصفات المنتج</h2>
+  <p className="mt-2 text-base font-medium leading-8 text-[#5f574f]">
+    تفاصيل مختصرة لمساعدتك على معرفة حجم المنتج وطريقة تشغيله.
+  </p>
+</div>
 
     <div className="relative grid lg:grid-cols-2">
-      <div className="hidden lg:block absolute inset-y-0 left-1/2 z-10 w-[4px] -translate-x-1/2 bg-[#0f766e]" />
+      <div className="absolute inset-y-0 left-1/2 z-10 hidden w-[2px] -translate-x-1/2 bg-[#0f766e] lg:block" />
 
       <div className="divide-y divide-[#eadfce]">
         {[
@@ -379,7 +387,7 @@ export default function Home() {
         ].map(([label, value]) => (
           <div
             key={label}
-            className="grid grid-cols-[140px_1fr] items-center gap-4 px-6 py-5"
+            className="grid grid-cols-[130px_1fr] items-center gap-3 px-5 py-4"
           >
             <p className="text-right font-bold text-[#6b6259]">{label}</p>
             <p className="text-right text-lg font-black text-[#191613]">
@@ -411,16 +419,14 @@ export default function Home() {
     </div>
   </div>
 
- <p className="mx-auto mt-4 max-w-4xl rounded-2xl bg-white px-5 py-4 text-center text-lg font-medium leading-8 text-[#5f574f] shadow-sm sm:text-xl sm:leading-9">
-    ملاحظة: المنتج غير طبي ولا يحتوي على لهب حقيقي. التأثير الظاهر ناتج عن
-    الإضاءة والرذاذ فقط.
-  </p>
-</section>
-  
+ <p className="mx-auto mt-4 w-full rounded-2xl bg-white px-4 py-3 text-center text-base font-medium leading-7 text-[#5f574f] shadow-sm sm:text-lg sm:leading-8">
+  ملاحظة: المنتج غير طبي ولا يحتوي على لهب حقيقي. التأثير الظاهر ناتج عن
+  الإضاءة والرذاذ فقط.
+</p>
 </section>
 
-    <section className="mx-auto max-w-[1040px] px-1 pt-1 pb-8 sm:px-2 lg:px-3">
-  <div className="rounded-[1.75rem] bg-[#191613] px-1.5 py-5 text-white sm:px-2 sm:py-6 lg:px-3">
+      <section className="mx-auto w-full max-w-[1120px] px-4 pt-3 pb-8 sm:px-6 lg:px-8">
+  <div className="rounded-[1.75rem] bg-[#191613] px-3 py-5 text-white sm:px-4 sm:py-6 lg:px-5">
     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <h2 className="text-2xl font-black sm:text-3xl">طريقة الاستخدام</h2>
@@ -573,3 +579,4 @@ className="mt-4 block rounded-2xl bg-white px-8 py-3.5 text-center text-xl font-
     </main>
   );
 }
+
