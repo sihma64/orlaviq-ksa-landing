@@ -5,7 +5,7 @@ export default function SiteHeader() {
       className="sticky top-0 z-50 border-b border-[#eadfce] bg-[#f7f2ea]/95 backdrop-blur"
     >
       <div className="relative mx-auto flex h-[64px] max-w-[1120px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <span className="pointer-events-none absolute left-1/2 top-1/2 block max-w-[150px] -translate-x-1/2 -translate-y-1/2 text-center text-[9px] font-semibold leading-3 text-[#5f574f] sm:hidden">
+        <span className="pointer-events-none absolute inset-x-[96px] top-1/2 hidden -translate-y-1/2 text-center text-[8px] font-semibold leading-3 text-[#5f574f] min-[430px]:block sm:hidden">
   موزع روائح بإضاءة دافئة ورذاذ ناعم
 </span>
         <a href="/" className="flex min-w-fit flex-col items-center leading-none">
