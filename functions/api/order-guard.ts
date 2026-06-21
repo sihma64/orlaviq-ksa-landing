@@ -171,8 +171,12 @@ async function callMaxMind(
   });
 
   if (!response.ok) {
-    throw new Error(`MAXMIND_ERROR_${response.status}`);
-  }
+  const errorBody = await response.text();
+
+  throw new Error(
+    `MAXMIND_ERROR_${response.status}: ${errorBody.slice(0, 300)}`
+  );
+}
 
   return response.json();
 }
@@ -268,13 +272,17 @@ export async function onRequestPost(context: {
         offerPrice
       );
     } catch (error) {
-      console.error("ORDER_GUARD_MAXMIND_ERROR", String(error));
+  const debugMessage =
+    error instanceof Error ? error.message : String(error);
 
-      return json({
-        allowed: false,
-        reason: "MAXMIND_ERROR",
-      });
-    }
+  console.error("ORDER_GUARD_MAXMIND_ERROR", debugMessage);
+
+  return json({
+    allowed: false,
+    reason: "MAXMIND_ERROR",
+    debug: debugMessage,
+  });
+}
 
     const country = detectCountry(maxmindResponse);
 
