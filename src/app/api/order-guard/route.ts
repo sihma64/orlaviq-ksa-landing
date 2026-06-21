@@ -312,10 +312,9 @@ if (isWhitelistedPhone(phone)) {
   console.error("ORDER_GUARD_MAXMIND_ERROR", debugMessage);
 
   return NextResponse.json({
-    allowed: false,
-    reason: "MAXMIND_ERROR",
-    debug: debugMessage,
-  });
+  allowed: false,
+  reason: "MAXMIND_ERROR",
+});
 }
 
     // Decision logic based on MaxMind response

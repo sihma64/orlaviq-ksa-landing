@@ -278,10 +278,9 @@ export async function onRequestPost(context: {
   console.error("ORDER_GUARD_MAXMIND_ERROR", debugMessage);
 
   return json({
-    allowed: false,
-    reason: "MAXMIND_ERROR",
-    debug: debugMessage,
-  });
+  allowed: false,
+  reason: "MAXMIND_ERROR",
+});
 }
 
     const country = detectCountry(maxmindResponse);
