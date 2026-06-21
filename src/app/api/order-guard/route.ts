@@ -166,6 +166,62 @@ async function checkMaxMindFraud(
   return response.json();
 }
 
+
+function cleanPhone(phone: string): string {
+  return String(phone || "")
+    .replace(/[\s\-()]/g, "")
+    .replace(/^\+/, "")
+    .replace(/^00966/, "966");
+}
+
+function getPhoneVariants(phone: string): string[] {
+  const cleaned = cleanPhone(phone);
+
+  const withoutCountry = cleaned.startsWith("966")
+    ? cleaned.slice(3)
+    : cleaned;
+
+  const withoutLeadingZero = withoutCountry.startsWith("0")
+    ? withoutCountry.slice(1)
+    : withoutCountry;
+
+  const variants = [
+    cleaned,
+    withoutCountry,
+    withoutLeadingZero,
+    `0${withoutLeadingZero}`,
+    `966${withoutLeadingZero}`,
+    `+966${withoutLeadingZero}`,
+  ];
+
+  return Array.from(new Set(variants.filter(Boolean)));
+}
+
+function isWhitelistedPhone(phone: string): boolean {
+  const whitelistRaw = ORDER_PHONE_WHITELIST || "";
+
+  const phoneVariants = getPhoneVariants(phone);
+
+  const whitelistVariants = whitelistRaw
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .flatMap((item) => getPhoneVariants(item));
+
+  const whitelistSet = new Set(whitelistVariants);
+
+  const isWhitelisted = phoneVariants.some((variant) =>
+    whitelistSet.has(variant)
+  );
+
+  console.log("ORDER_GUARD_PHONE_CHECK", {
+    phoneNormalized: phoneVariants[0],
+    whitelistNormalized: Array.from(whitelistSet),
+    isWhitelisted,
+  });
+
+  return isWhitelisted;
+}
 /**
  * Main POST handler for order guard
  */
@@ -189,29 +245,25 @@ export async function POST(request: NextRequest) {
     // Get client IP
     const clientIp = getClientIp(request);
 
-    // Normalize phone
-    const normalizedPhone = normalizePhone(phone);
+   // Normalize phone for MaxMind payload
+const normalizedPhone = normalizePhone(phone);
 
-    // Check if phone is whitelisted
-    const whitelistedPhones = ORDER_PHONE_WHITELIST.split(",").map((p) =>
-      normalizePhone(p.trim())
-    );
+// Check if phone is whitelisted with all Saudi phone variants
+if (isWhitelistedPhone(phone)) {
+  const whatsappUrl = buildWhatsappUrl(
+    fullName,
+    phone,
+    city,
+    offerLabel,
+    offerPrice
+  );
 
-    if (whitelistedPhones.includes(normalizedPhone)) {
-      const whatsappUrl = buildWhatsappUrl(
-        fullName,
-        phone,
-        city,
-        offerLabel,
-        offerPrice
-      );
-
-      return NextResponse.json({
-        allowed: true,
-        reason: "WHITELISTED_TEST_NUMBER",
-        whatsappUrl,
-      });
-    }
+  return NextResponse.json({
+    allowed: true,
+    reason: "WHITELISTED_TEST_NUMBER",
+    whatsappUrl,
+  });
+}
 
     // Check if MaxMind credentials are configured
     if (!MAXMIND_ACCOUNT_ID || !MAXMIND_LICENSE_KEY) {
