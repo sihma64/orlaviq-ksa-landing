@@ -2,7 +2,9 @@ type TrackingEventName =
   | "ViewContent"
   | "SelectOffer"
   | "OrderFormSubmit"
-  | "WhatsAppConfirmClick";
+  | "WhatsAppConfirmClick"
+  | "OrderRejected"
+  | "OrderGuardError";
 
 type TrackingParams = Record<string, string | number | boolean | null | undefined>;
 

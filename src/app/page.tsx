@@ -62,6 +62,8 @@ export default function Home() {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const offer = useMemo(
     () => offers.find((item) => item.id === selectedOffer) ?? offers[1],
@@ -106,8 +108,12 @@ export default function Home() {
 طريقة الدفع: الدفع عند الاستلام`;
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    // Clear any previous error
+    setErrorMessage("");
+    setIsSubmitting(true);
 
     trackEvent("OrderFormSubmit", {
       brand: "ORLAVIQ",
@@ -118,19 +124,64 @@ export default function Home() {
       has_city: Boolean(city.trim()),
     });
 
-    const message = encodeURIComponent(buildWhatsappMessage());
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+    try {
+      // Call order guard API
+      const response = await fetch("/api/order-guard", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName,
+          phone,
+          city,
+          offerLabel: offer.label,
+          offerPrice: offer.price,
+        }),
+      });
 
-    trackEvent("WhatsAppConfirmClick", {
-      brand: "ORLAVIQ",
-      product: "flame_aroma_diffuser",
-      offer_id: offer.id,
-      offer_label: offer.label,
-      offer_price: offer.price,
-      whatsapp_number: WHATSAPP_NUMBER,
-    });
+      const data = await response.json();
 
-    window.open(url, "_blank", "noopener,noreferrer");
+      if (data.allowed && data.whatsappUrl) {
+        // Order approved - open WhatsApp
+        trackEvent("WhatsAppConfirmClick", {
+          brand: "ORLAVIQ",
+          product: "flame_aroma_diffuser",
+          offer_id: offer.id,
+          offer_label: offer.label,
+          offer_price: offer.price,
+          whatsapp_number: WHATSAPP_NUMBER,
+          guard_reason: data.reason,
+        });
+
+        window.open(data.whatsappUrl, "_blank", "noopener,noreferrer");
+      } else {
+        // Order rejected - show error message
+        trackEvent("OrderRejected", {
+          brand: "ORLAVIQ",
+          product: "flame_aroma_diffuser",
+          offer_id: offer.id,
+          reason: data.reason,
+        });
+
+        setErrorMessage(
+          "عذراً، لا يمكن تأكيد الطلب حالياً. يرجى التواصل معنا عبر واتساب للمراجعة."
+        );
+      }
+    } catch (error) {
+      console.error("Order guard error:", error);
+      trackEvent("OrderGuardError", {
+        brand: "ORLAVIQ",
+        product: "flame_aroma_diffuser",
+        offer_id: offer.id,
+      });
+
+      setErrorMessage(
+        "عذراً، لا يمكن تأكيد الطلب حالياً. يرجى التواصل معنا عبر واتساب للمراجعة."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -277,11 +328,20 @@ export default function Home() {
               />
             </div>
 
+            {errorMessage && (
+              <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-center">
+                <p className="text-base font-bold text-red-800 leading-7">
+                  {errorMessage}
+                </p>
+              </div>
+            )}
+
             <button
               type="submit"
-              className="w-full rounded-xl bg-[#0f766e] px-6 py-3 text-lg font-black text-white shadow-lg transition hover:bg-[#115e59]"
+              disabled={isSubmitting}
+              className="w-full rounded-xl bg-[#0f766e] px-6 py-3 text-lg font-black text-white shadow-lg transition hover:bg-[#115e59] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              تأكيد الطلب عبر واتساب
+              {isSubmitting ? "جاري التحقق..." : "تأكيد الطلب عبر واتساب"}
             </button>
 
             <p className="text-center text-base font-black leading-6 text-[#5f574f]">
