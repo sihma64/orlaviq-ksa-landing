@@ -160,8 +160,12 @@ async function checkMaxMindFraud(
   });
 
   if (!response.ok) {
-    throw new Error(`MaxMind API error: ${response.status}`);
-  }
+  const errorBody = await response.text();
+
+  throw new Error(
+    `MAXMIND_ERROR_${response.status}: ${errorBody.slice(0, 300)}`
+  );
+}
 
   return response.json();
 }
@@ -302,12 +306,17 @@ if (isWhitelistedPhone(phone)) {
         numericPrice
       );
     } catch (error) {
-      console.error("MaxMind API error:", error);
-      return NextResponse.json({
-        allowed: false,
-        reason: "MAXMIND_ERROR",
-      });
-    }
+  const debugMessage =
+    error instanceof Error ? error.message : String(error);
+
+  console.error("ORDER_GUARD_MAXMIND_ERROR", debugMessage);
+
+  return NextResponse.json({
+    allowed: false,
+    reason: "MAXMIND_ERROR",
+    debug: debugMessage,
+  });
+}
 
     // Decision logic based on MaxMind response
 
