@@ -100,7 +100,7 @@ function buildWhatsappUrl(
 ): string {
   const cityLine = city.trim() ? `\nالمدينة: ${city}` : "";
 
-  const message = `السلام عليكم، أريد تأكيد طلب موزع روائح بتأثير اللهب من ORLAVIQ.
+  const message = `أريد تأكيد طلب موزع روائح بإضاءة دافئة ورذاذ ناعم من ORLAVIQ.
 
 الطلب: ${offerLabel}
 السعر: ${offerPrice}
