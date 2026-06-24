@@ -349,6 +349,39 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Normalize and validate phone number
+    const normalizedPhone = phone.replace(/[\s-()]/g, "");
+    const isValidKsaPhone = /^(05|5|9665|\+9665)\d{8}$/.test(normalizedPhone);
+
+    if (!isValidKsaPhone) {
+      // Allow the whitelisted test number to bypass the validation
+      if (isWhitelistedPhone(phone)) {
+        const orderData = {
+          fullName,
+          phone,
+          city,
+          fullAddress: fullAddress || "",
+          offerLabel,
+          offerPrice,
+          clientIp: getClientIp(request),
+          userAgent: request.headers.get("user-agent") || "",
+        };
+        return await saveOrderAndReturnResponse(
+          "WHITELISTED_TEST_NUMBER",
+          orderData
+        );
+      }
+
+      return NextResponse.json(
+        {
+          allowed: false,
+          reason: "INVALID_KSA_PHONE",
+          message: "Only Saudi mobile numbers are accepted.",
+        },
+        { status: 400 }
+      );
+    }
+
     // Get client IP and user agent
     const clientIp = getClientIp(request);
     const userAgent = request.headers.get("user-agent") || "";
