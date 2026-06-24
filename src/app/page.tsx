@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { trackEvent } from "@/lib/tracking";
 
 const WHATSAPP_NUMBER = "212716296177";
@@ -58,10 +59,12 @@ const howToSteps = [
 ];
 
 export default function Home() {
+  const router = useRouter();
   const [selectedOffer, setSelectedOffer] = useState("2");
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
+  const [fullAddress, setFullAddress] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -135,6 +138,7 @@ export default function Home() {
           fullName,
           phone,
           city,
+          fullAddress,
           offerLabel: offer.label,
           offerPrice: offer.price,
         }),
@@ -143,20 +147,22 @@ export default function Home() {
       const data = await response.json();
 
       if (data.allowed && data.whatsappUrl) {
-        // Order approved - open WhatsApp
+        // Order approved - store whatsappUrl and redirect to thank you page
         trackEvent("WhatsAppConfirmClick", {
           brand: "ORLAVIQ",
           product: "flame_aroma_diffuser",
           offer_id: offer.id,
           offer_label: offer.label,
           offer_price: offer.price,
-          whatsapp_number: WHATSAPP_NUMBER,
           guard_reason: data.reason,
         });
 
-        window.open(data.whatsappUrl, "_blank", "noopener,noreferrer");
+        sessionStorage.setItem("whatsappUrl", data.whatsappUrl);
+        sessionStorage.setItem("orderId", data.orderId);
+        router.push("/thank-you");
       } else {
         // Order rejected - show error message
+        console.error("Order rejected by API:", { status: response.status, data });
         trackEvent("OrderRejected", {
           brand: "ORLAVIQ",
           product: "flame_aroma_diffuser",
@@ -328,6 +334,16 @@ export default function Home() {
               />
             </div>
 
+            <div>
+              <label className="mb-1 block text-sm font-bold">العنوان الكامل</label>
+              <input
+                value={fullAddress}
+                onChange={(event) => setFullAddress(event.target.value)}
+                placeholder="اكتب العنوان الكامل للتوصيل"
+                className="w-full rounded-xl border border-[#e0d6c9] bg-[#fffaf2] px-3 py-2 text-base outline-none focus:border-[#0f766e]"
+              />
+            </div>
+
             {errorMessage && (
               <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-center">
                 <p className="text-base font-bold text-red-800 leading-7">
@@ -341,7 +357,7 @@ export default function Home() {
               disabled={isSubmitting}
               className="w-full rounded-xl bg-[#0f766e] px-6 py-3 text-lg font-black text-white shadow-lg transition hover:bg-[#115e59] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "جاري التحقق..." : "تأكيد الطلب عبر واتساب"}
+              {isSubmitting ? "جاري الإرسال..." : "إتمام الطلب"}
             </button>
 
             <p className="text-center text-base font-black leading-6 text-[#5f574f]">

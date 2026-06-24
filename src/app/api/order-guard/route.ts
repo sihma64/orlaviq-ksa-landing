@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { sendOrderToGoogleSheets } from "../../../lib/googleSheets";
 
 // Environment variables
+const GOOGLE_SHEETS_WEBHOOK_URL = process.env.GOOGLE_SHEETS_WEBHOOK_URL || "";
+const GOOGLE_SHEETS_WEBHOOK_SECRET =
+  process.env.GOOGLE_SHEETS_WEBHOOK_SECRET || "";
 const MAXMIND_ACCOUNT_ID = process.env.MAXMIND_ACCOUNT_ID || "";
 const MAXMIND_LICENSE_KEY = process.env.MAXMIND_LICENSE_KEY || "";
 const MAXMIND_MINFRAUD_ENDPOINT =
@@ -12,12 +16,13 @@ const ORDER_MAX_RISK_SCORE = parseInt(
   10
 );
 const ORDER_PHONE_WHITELIST = process.env.ORDER_PHONE_WHITELIST || "0550000000";
-const WHATSAPP_NUMBER = process.env.WHATSAPP_NUMBER || "212716296177";
+const WHATSAPP_NUMBER = process.env.WHATSAPP_RECEIVER_NUMBER || process.env.WHATSAPP_NUMBER || "212716296177";
 
 interface OrderGuardRequest {
   fullName: string;
   phone: string;
   city: string;
+  fullAddress?: string;
   offerLabel: string;
   offerPrice: string;
 }
@@ -88,31 +93,6 @@ function generateOrderId(): string {
   return `ORD-${Date.now()}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
 }
 
-/**
- * Build WhatsApp URL with order details
- */
-function buildWhatsappUrl(
-  fullName: string,
-  phone: string,
-  city: string,
-  offerLabel: string,
-  offerPrice: string
-): string {
-  const cityLine = city.trim() ? `\nالمدينة: ${city}` : "";
-
-  const message = `أريد تأكيد طلب موزع روائح بإضاءة دافئة ورذاذ ناعم من ORLAVIQ.
-
-الطلب: ${offerLabel}
-السعر: ${offerPrice}
-
-الاسم الشخصي: ${fullName}
-رقم الجوال: ${phone}${cityLine}
-
-طريقة الدفع: الدفع عند الاستلام`;
-
-  const encodedMessage = encodeURIComponent(message);
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
-}
 
 /**
  * Call MaxMind minFraud Score API
@@ -226,14 +206,137 @@ function isWhitelistedPhone(phone: string): boolean {
 
   return isWhitelisted;
 }
+
+async function saveOrderAndReturnResponse(
+  reason: string,
+  orderData: {
+    fullName: string;
+    phone: string;
+    city: string;
+    fullAddress: string;
+    offerLabel: string;
+    offerPrice: string;
+    clientIp: string;
+    userAgent: string;
+  }
+) {
+  const {
+    fullName,
+    phone,
+    city,
+    fullAddress,
+    offerLabel,
+    offerPrice,
+    clientIp,
+    userAgent,
+  } = orderData;
+  const orderId = generateOrderId();
+
+  // Generate Order date and Order time in Asia/Riyadh timezone
+  const now = new Date();
+  const orderDate = new Intl.DateTimeFormat("en-CA", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    timeZone: "Asia/Riyadh",
+  }).format(now);
+  const orderTime = new Intl.DateTimeFormat("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    timeZone: "Asia/Riyadh",
+    hour12: false,
+  }).format(now);
+
+  // Extract quantity from offerLabel
+  let quantity = 1;
+  if (offerLabel.includes("قطعتين")) {
+    quantity = 2;
+  } else if (offerLabel.includes("3")) {
+    quantity = 3;
+  }
+
+  const numericPrice = extractNumericPrice(offerPrice);
+
+  const whatsappMessage = `السلام عليكم، أريد تأكيد طلبي من ORLAVIQ.
+
+رقم الطلب: ${orderId}
+المنتج: موزع روائح بتأثير اللهب
+العرض: ${offerLabel}
+السعر الإجمالي: ${offerPrice}
+الاسم: ${fullName}
+رقم الجوال: ${phone}
+المدينة: ${city || 'غير محدد'}
+العنوان: ${fullAddress || 'غير محدد'}
+طريقة الدفع: الدفع عند الاستلام`;
+
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    whatsappMessage
+  )}`;
+
+  const googleSheetPayload = {
+    "Order date": orderDate,
+    "Order time": orderTime,
+    "Order ID": orderId,
+    "Full name*": fullName,
+    "Phone*": phone,
+    whatsapp_link: whatsappUrl,
+    "confirmation by whatsapp": "NO",
+    "Country*": "SA",
+    City: city,
+    "العنوان الكامل - Full Address": fullAddress,
+    "SKU*": "ORLAVIQ-FLAME-DIFFUSER",
+    "Total quantity*": quantity,
+    "Total with customer currency*": numericPrice,
+    "Order customer currency*": "SAR",
+    Note: "status=new_order; deliveryStatus=pending",
+  };
+
+  const googleSheetsResult = await sendOrderToGoogleSheets(googleSheetPayload);
+
+  if (!googleSheetsResult.ok) {
+    console.error("Failed to save order to Google Sheets", googleSheetsResult);
+    return NextResponse.json(
+      {
+        allowed: false,
+        reason: "PERSISTENCE_ERROR",
+        message: "Failed to save order to Google Sheets.",
+      },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json({
+    allowed: true,
+    reason,
+    whatsappUrl,
+    orderId,
+  });
+}
+
 /**
  * Main POST handler for order guard
  */
 export async function POST(request: NextRequest) {
   try {
+    // Check for Google Sheets config first
+    if (!GOOGLE_SHEETS_WEBHOOK_URL || !GOOGLE_SHEETS_WEBHOOK_SECRET) {
+      console.error(
+        "CRITICAL: GOOGLE_SHEETS_WEBHOOK_URL or GOOGLE_SHEETS_WEBHOOK_SECRET is not set."
+      );
+      return NextResponse.json(
+        {
+          allowed: false,
+          reason: "SERVER_CONFIGURATION_ERROR",
+          message: "Google Sheets integration is not configured.",
+        },
+        { status: 500 }
+      );
+    }
+
     // Parse request body
     const body: OrderGuardRequest = await request.json();
-    const { fullName, phone, city, offerLabel, offerPrice } = body;
+    const { fullName, phone, city, fullAddress, offerLabel, offerPrice } = body;
 
     // Validate required fields
     if (!fullName || !phone || !offerLabel || !offerPrice) {
@@ -246,53 +349,44 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get client IP
+    // Get client IP and user agent
     const clientIp = getClientIp(request);
+    const userAgent = request.headers.get("user-agent") || "";
 
-   // Normalize phone for MaxMind payload
-const normalizedPhone = normalizePhone(phone);
+    const orderData = {
+      fullName,
+      phone,
+      city,
+      fullAddress: fullAddress || "",
+      offerLabel,
+      offerPrice,
+      clientIp,
+      userAgent,
+    };
 
-// Check if phone is whitelisted with all Saudi phone variants
-if (isWhitelistedPhone(phone)) {
-  const whatsappUrl = buildWhatsappUrl(
-    fullName,
-    phone,
-    city,
-    offerLabel,
-    offerPrice
-  );
-
-  return NextResponse.json({
-    allowed: true,
-    reason: "WHITELISTED_TEST_NUMBER",
-    whatsappUrl,
-  });
-}
+    // Check if phone is whitelisted
+    if (isWhitelistedPhone(phone)) {
+      return await saveOrderAndReturnResponse(
+        "WHITELISTED_TEST_NUMBER",
+        orderData
+      );
+    }
 
     // Check if MaxMind credentials are configured
     if (!MAXMIND_ACCOUNT_ID || !MAXMIND_LICENSE_KEY) {
       console.warn(
         "MaxMind credentials not configured. Allowing order by default."
       );
-      const whatsappUrl = buildWhatsappUrl(
-        fullName,
-        phone,
-        city,
-        offerLabel,
-        offerPrice
+      return await saveOrderAndReturnResponse(
+        "MAXMIND_NOT_CONFIGURED",
+        orderData
       );
-
-      return NextResponse.json({
-        allowed: true,
-        reason: "MAXMIND_NOT_CONFIGURED",
-        whatsappUrl,
-      });
     }
 
     // Extract numeric price
     const numericPrice = extractNumericPrice(offerPrice);
 
-    // Generate order ID
+    // Generate order ID for MaxMind check
     const orderId = generateOrderId();
 
     // Call MaxMind minFraud Score API
@@ -301,21 +395,19 @@ if (isWhitelistedPhone(phone)) {
       maxmindResponse = await checkMaxMindFraud(
         clientIp,
         orderId,
-        normalizedPhone,
+        normalizePhone(phone),
         city,
         numericPrice
       );
     } catch (error) {
-  const debugMessage =
-    error instanceof Error ? error.message : String(error);
-
-  console.error("ORDER_GUARD_MAXMIND_ERROR", debugMessage);
-
-  return NextResponse.json({
-  allowed: false,
-  reason: "MAXMIND_ERROR",
-});
-}
+      const debugMessage =
+        error instanceof Error ? error.message : String(error);
+      console.error("ORDER_GUARD_MAXMIND_ERROR", debugMessage);
+      return NextResponse.json({
+        allowed: false,
+        reason: "MAXMIND_ERROR",
+      });
+    }
 
     // Decision logic based on MaxMind response
 
@@ -353,7 +445,6 @@ if (isWhitelistedPhone(phone)) {
     }
 
     // 4. Check for VPN/Proxy/Anonymizer signals
-    // MaxMind may provide risk reasons that indicate anonymization
     if (maxmindResponse.ip_address_risk_reasons) {
       const suspiciousReasons = [
         "ANONYMOUS_IP",
@@ -379,19 +470,7 @@ if (isWhitelistedPhone(phone)) {
     }
 
     // All checks passed - allow order
-    const whatsappUrl = buildWhatsappUrl(
-      fullName,
-      phone,
-      city,
-      offerLabel,
-      offerPrice
-    );
-
-    return NextResponse.json({
-      allowed: true,
-      reason: "APPROVED",
-      whatsappUrl,
-    });
+    return await saveOrderAndReturnResponse("APPROVED", orderData);
   } catch (error) {
     console.error("Order guard error:", error);
     return NextResponse.json(
