@@ -56,26 +56,22 @@ export default function ThankYouPage() {
     >
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg transition-transform duration-500 ease-in-out hover:shadow-xl">
         <div className="text-center">
-          <p className="mb-2 text-sm font-medium text-[#c8a97e]">
-            موزع روائح بإضاءة دافئة ورذاذ ناعم
-          </p>
-
-          <h1 className="mb-3 text-3xl font-extrabold text-[#3a3a3a]">
+          <h1 className="mb-4 text-4xl font-bold text-[#3a3a3a]">
             تم استلام طلبك بنجاح
           </h1>
 
-          <p className="mb-8 text-base text-[#6a6a6a]">
-            شكراً لك، تم تسجيل طلبك بنجاح وسيتم التواصل معك لتأكيد التفاصيل قبل التجهيز.
+          <p className="mb-8 text-lg text-[#6a6a6a]">
+            طلبك الآن مسجّل لدينا، وسيتم مراجعته بعناية قبل التجهيز. لتسريع تأكيد الطلب وضمان التواصل معك بدون تأخير، يمكنك تأكيده الآن عبر واتساب.
           </p>
 
           {whatsappUrl && (
-            <div className="mb-8 rounded-xl border border-[#e0e0e0] bg-[#fafafa] p-6">
-              <h2 className="mb-2 text-lg font-bold text-[#3a3a3a]">
-                تأكيد الطلب عبر واتساب
+            <div className="mb-8 rounded-xl border border-[#e0e0e0] bg-[#fafafa] p-6 text-center">
+              <h2 className="mb-2 text-xl font-bold text-[#3a3a3a]">
+                أكد طلبك الآن عبر واتساب
               </h2>
 
-              <p className="mb-6 text-sm text-[#6a6a6a]">
-                يمكنك تأكيد طلبك عبر واتساب لتسهيل التواصل معك بخصوص الطلب.
+              <p className="mb-6 text-base text-[#6a6a6a]">
+                اضغط على الزر لإرسال رسالة تأكيد تحتوي على تفاصيل طلبك. هذا يساعدنا على تجهيز الطلب بشكل أسرع والتواصل معك بسهولة.
               </p>
 
               <button
@@ -96,8 +92,8 @@ export default function ThankYouPage() {
             </Link>
           </div>
 
-          <p className="mb-6 text-xs text-[#8a8a8a]">
-            إذا لم تؤكد عبر واتساب، سيتواصل معك فريق خدمة العملاء لتأكيد الطلب.
+          <p className="mb-6 text-sm text-[#8a8a8a]">
+            إذا لم تؤكد عبر واتساب، سيتواصل معك فريق خدمة العملاء لتأكيد الطلب قبل التجهيز.
           </p>
 
           <div className="flex flex-col items-center justify-center gap-2 text-xs text-[#8a8a8a]">
