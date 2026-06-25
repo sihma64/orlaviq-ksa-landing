@@ -264,3 +264,43 @@ html {
     transform: translateX(2px);
   }
 }
+
+@keyframes whatsapp-button-horizontal-shake {
+  0% {
+    transform: translateX(0);
+  }
+
+  10% {
+    transform: translateX(-10px);
+  }
+
+  20% {
+    transform: translateX(10px);
+  }
+
+  30% {
+    transform: translateX(-8px);
+  }
+
+  40% {
+    transform: translateX(8px);
+  }
+
+  50% {
+    transform: translateX(-5px);
+  }
+
+  60% {
+    transform: translateX(5px);
+  }
+
+  70%,
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.whatsapp-button-shake {
+  animation: whatsapp-button-horizontal-shake 2.2s ease-in-out infinite;
+  will-change: transform;
+}

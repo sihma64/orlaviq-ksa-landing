@@ -335,7 +335,12 @@ export default function Home() {
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-bold">العنوان الكامل</label>
+              <label className="mb-1 block text-sm font-bold">
+                 العنوان الكامل {" "}
+                <span className="text-xs font-normal text-[#7a7068]">
+                  (اختياري)
+                </span>
+              </label>
               <input
                 value={fullAddress}
                 onChange={(event) => setFullAddress(event.target.value)}
@@ -357,7 +362,7 @@ export default function Home() {
               disabled={isSubmitting}
               className="w-full rounded-xl bg-[#0f766e] px-6 py-3 text-lg font-black text-white shadow-lg transition hover:bg-[#115e59] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "جاري الإرسال..." : "إتمام الطلب"}
+              {isSubmitting ? "جاري تسجيل الطلب..." : "إتمام الطلب"}
             </button>
 
             <p className="text-center text-base font-black leading-6 text-[#5f574f]">

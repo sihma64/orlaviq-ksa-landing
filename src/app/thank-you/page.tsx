@@ -77,7 +77,7 @@ export default function ThankYouPage() {
               <button
                 onClick={handleWhatsAppConfirmation}
                 disabled={isConfirming}
-                className="w-full rounded-lg bg-[#25D366] px-6 py-3 text-base font-bold text-white shadow-md transition-transform duration-300 hover:scale-105 hover:bg-[#128C7E] focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-opacity-50 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="whatsapp-button-shake w-full rounded-lg bg-[#25D366] px-6 py-3 text-base font-bold text-white shadow-md transition-colors duration-300 hover:bg-[#128C7E] focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-opacity-50 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isConfirming ? "جاري التأكيد..." : "تأكيد عبر واتساب"}
               </button>
